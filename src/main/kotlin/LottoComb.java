@@ -2,10 +2,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class LottoComb {
-	private static final int[] data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45};
-	private static final int N = data.length; // nCr에서 n을 의미
+	private static int[] data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45};
+	
 	private static final int R = 6; //추출할 갯수 nCr에서 r을 의미
-	private static int[] out = new int[N];
+	private static int[] out;
 	private static int count = 0;
 
 	// 소수
@@ -175,8 +175,8 @@ public class LottoComb {
 			}
 		}
 
-		//합계 체크 100 ~ 170
-		if (sum < 100 || sum > 170) return false;
+		//합계 체크 100 ~ 180
+		if (sum < 100 || sum > 180) return false;
 
 		//홀짝비율 6:0,0:6 제외
 		if (evenCount == 6 || oddCount == 6) return false;
@@ -444,6 +444,17 @@ public class LottoComb {
 			return false;
 		}
 
+		// 가로 라인마다 선택한 번호가 3개를 초과하는 경우 제외
+		if (checkArray3(numbers,horizontalGroup1) == false
+				|| checkArray3(numbers,horizontalGroup2) == false
+				|| checkArray3(numbers,horizontalGroup3) == false
+				|| checkArray3(numbers,horizontalGroup4) == false
+				|| checkArray3(numbers,horizontalGroup5) == false
+				|| checkArray3(numbers,horizontalGroup6) == false
+		) {
+			return false;
+		}
+
 		// 세로 연속 3줄 패턴
 		// 세로 라인 1,2,3
 		int[] verticalLine1 = {
@@ -549,6 +560,18 @@ public class LottoComb {
 			return false;
 		}
 
+		// 세로 라인마다 선택한 번호가 3개를 초과하는 경우 제외
+		if (checkArray3(numbers,verticalGroup1) == false
+				|| checkArray3(numbers,verticalGroup2) == false
+				|| checkArray3(numbers,verticalGroup3) == false
+				|| checkArray3(numbers,verticalGroup4) == false
+				|| checkArray3(numbers,verticalGroup5) == false
+				|| checkArray3(numbers,verticalGroup6) == false
+				|| checkArray3(numbers,verticalGroup7) == false
+		) {
+			return false;
+		}
+
 		// 로또 생성번호들이 모서리 패턴내에 있는 번호가 적어도 2개는 있어야 한다.
 		int[] edgeGroup = {
 				1,2,6,7,
@@ -588,6 +611,17 @@ public class LottoComb {
 		return true;
 	}
 
+	private static boolean checkArray3(int[] numbers, int[] targets) {
+		int count = 0;
+		for (int number : numbers) {
+			for (int target : targets) {
+				if (number == target) count++;
+				if (count > 3) return false;
+			}
+		}
+		return true;
+	}
+
 	private static void comb(int start, int end, int index) {
 		if (end == 0) {
 			//로또 번호 유효성 검사
@@ -606,7 +640,7 @@ public class LottoComb {
 			}
 			System.out.println();
 			count++;
-		} else if (index == N) {
+		} else if (index == data.length) {
 			return;
 		} else {
 			out[start] = data[index];
@@ -616,7 +650,8 @@ public class LottoComb {
 	}
 
 	public static void main(String[] args) throws Exception {
-		for(int i=0;i<N;i++)
+		out = new int[data.length];
+		for(int i=0;i<data.length;i++)
 		{
 			out[i] = data[i];
 		}
@@ -624,40 +659,6 @@ public class LottoComb {
 		count = 0;
 		comb(0,R,0);
 		System.out.println("조합 총 갯수 : " + count);
-	}
-
-	private static void findContinuesNumber() {
-		int[] lottoNumbers = {1, 2,3, 4, 5, 6, 8, 10, 15, 19, 20, 30, 32, 33, 34, 35, 40, 45, 49, 50, 51, 55, 56, 57, 58, 59, 60, 62, 65, 67, 69, 70};
-
-		//$out_cnt[]="";
-
-		int cnt = 0; // 몇번 연속되는지
-		//$cnt_temp = ""; // 몇번 연속되는지
-
-		for (int i = 0; i <= lottoNumbers.length-1; i++) {
-			cnt = 0;
-
-			for (int j = 1; j <= lottoNumbers.length-1; j++) {
-				if ((lottoNumbers[i] + 1) == lottoNumbers[j]) {
-					System.out.println(lottoNumbers[i] + " " + lottoNumbers[j]);
-					cnt = cnt + 1;
-					//echo "연속된값 : ".lottoNumbers[$i]."&nbsp;".lottoNumbers[$j]."";
-					//echo $cnt."연번";
-					//echo "";
-
-				}
-
-				/*
-				if(lottoNumbers[$i]==lottoNumbers[$j])
-				{
-					$cnt_temp=$cnt_temp+1;
-					$out_cnt[$i]=$cnt_temp;
-				}
-				*/
-
-			}
-			System.out.println(cnt + "연번");
-		}
 	}
 
 	/**
