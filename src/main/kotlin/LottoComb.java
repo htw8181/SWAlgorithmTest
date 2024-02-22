@@ -3,7 +3,6 @@ import java.util.Set;
 
 public class LottoComb {
 	private static int[] data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45};
-	
 	private static final int R = 6; //추출할 갯수 nCr에서 r을 의미
 	private static int[] out;
 	private static int count = 0;
@@ -220,9 +219,9 @@ public class LottoComb {
 		//완전제곱수는 2개까지
 		if (squareNumberCount > 2) return false;
 
-		//AC는 7~10까지
+		//AC는 6~10까지
 		int ac = getACValue(numbers);
-		if (ac < 7 || ac > 10) return false;
+		if (ac < 6 || ac > 10) return false;
 
 		return true;
 	}
@@ -697,7 +696,7 @@ public class LottoComb {
 		*/
 
 		if (
-				(sequentialCounter[1] > 2) || (sequentialCounter[2] > 1) || (sequentialCounter[3] > 1) || (sequentialCounter[4] > 1) || (sequentialCounter[5] > 1)
+				(sequentialCounter[1] > 2) || (sequentialCounter[2] > 1) || (sequentialCounter[3] > 0) || (sequentialCounter[4] > 0) || (sequentialCounter[5] > 0)
 		) {
 			return false;
 		}
