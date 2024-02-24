@@ -271,7 +271,88 @@ public class LottoComb {
 
 		return ac;
 	}
+
+	/**
+	 * 가로, 세로 라인 중에 적어도 1라인 이상의 멸라인(destruction line : 라인에 번호가 아무것도 선택이 안된 라인)이 있어야 한다.
+	 * @param numbers
+	 * @return
+	 */
+	private static boolean checkDestructionLine(int[] numbers) {
+		// 가로 라인
+		int[] horizontalGroup1 = {
+				1,2,3,4,5,6,7
+		};
+		int[] horizontalGroup2 = {
+				8,9,10,11,12,13,14
+		};
+		int[] horizontalGroup3 = {
+				15,16,17,18,19,20,21
+		};
+		int[] horizontalGroup4 = {
+				22,23,24,25,26,27,28
+		};
+		int[] horizontalGroup5 = {
+				29,30,31,32,33,34,35
+		};
+		int[] horizontalGroup6 = {
+				36,37,38,39,40,41,42
+		};
+		int[] horizontalGroup7 = {
+				43,44,45
+		};
+
+		if (checkArray4(numbers,horizontalGroup1) == true
+				&& checkArray4(numbers,horizontalGroup2) == true
+				&& checkArray4(numbers,horizontalGroup3) == true
+				&& checkArray4(numbers,horizontalGroup4) == true
+				&& checkArray4(numbers,horizontalGroup5) == true
+				&& checkArray4(numbers,horizontalGroup6) == true
+				&& checkArray4(numbers,horizontalGroup7) == true
+		) {
+			return false;
+		}
+
+		// 세로 라인
+		int[] verticalGroup1 = {
+				1,8,15,22,29,36,43
+		};
+		int[] verticalGroup2 = {
+				2,9,16,23,30,37,44
+		};
+		int[] verticalGroup3 = {
+				3,10,17,24,31,38,45
+		};
+		int[] verticalGroup4 = {
+				4,11,18,25,32,39
+		};
+		int[] verticalGroup5 = {
+				5,12,19,26,33,40
+		};
+		int[] verticalGroup6 = {
+				6,13,20,27,34,41
+		};
+		int[] verticalGroup7 = {
+				7,14,21,28,35,42
+		};
+
+		if (checkArray4(numbers,verticalGroup1) == true
+				&& checkArray4(numbers,verticalGroup2) == true
+				&& checkArray4(numbers,verticalGroup3) == true
+				&& checkArray4(numbers,verticalGroup4) == true
+				&& checkArray4(numbers,verticalGroup5) == true
+				&& checkArray4(numbers,verticalGroup6) == true
+				&& checkArray4(numbers,verticalGroup7) == true
+		) {
+			return false;
+		}
+
+		return true;
+	}
+	
 	private static boolean checkLottoPatternValidation(int[] numbers) {
+		// 멸라인 체크
+		if (!checkDestructionLine(numbers)) return false;
+
 		// 삼각패턴
 		// 좌상 삼각 패턴
 		int[] leftTopTriangles = {
@@ -619,6 +700,15 @@ public class LottoComb {
 			}
 		}
 		return true;
+	}
+
+	private static boolean checkArray4(int[] numbers, int[] targets) {
+		for (int number : numbers) {
+			for (int target : targets) {
+				if (number == target) return true;
+			}
+		}
+		return false;
 	}
 
 	private static void comb(int start, int end, int index) {
