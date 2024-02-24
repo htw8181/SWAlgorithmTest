@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -747,7 +748,7 @@ public class LottoComb {
 
 		count = 0;
 		comb(0,R,0);
-		System.out.println("조합 총 갯수 : " + count);
+		System.out.println("조합 총 갯수 : " + new DecimalFormat("#,###").format(count));
 	}
 
 	/**
