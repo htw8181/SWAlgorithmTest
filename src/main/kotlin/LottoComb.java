@@ -212,6 +212,7 @@ public class LottoComb {
 		if (checkSequenceNumbers(numbers,6) == false) return false;
 
 		//이웃수는 3개까지
+		if (!checkNeighborNumbers(numbers)) return false;
 
 		//동일 끝수는 3개까지
 		if (endNumber0 > 3 || endNumber1 > 3 || endNumber2 > 3 || endNumber3 > 3 || endNumber4 > 3 || endNumber5 > 3 || endNumber6 > 3 || endNumber7 > 3 || endNumber8 > 3 || endNumber9 > 3)
@@ -274,7 +275,34 @@ public class LottoComb {
 	}
 
 	/**
-	 * 가로, 세로 라인 중에 적어도 1라인 이상의 멸라인(destruction line : 라인에 번호가 아무것도 선택이 안된 라인)이 있어야 한다.
+	 * 이전회차 당첨번호들에 대한 이웃수 체크
+	 * 3개 초과시 false
+	 * @param numbers
+	 * @return
+	 */
+	private static boolean checkNeighborNumbers(int[] numbers) {
+		int[] targets = {7,19,26,37,39,44};
+
+		/*int count = 0;
+
+		for (int number : numbers) {
+			for (int target : targets) {
+				int neighborNumber1 = target - 1;
+				int neighborNumber2 = target + 1;
+
+				if (number == neighborNumber1 || number == neighborNumber2) {
+					count ++;
+
+					if (count > 3) return false;
+				}
+			}
+		}*/
+
+		return true;
+	}
+
+	/**
+	 * 가로, 세로 라인 각각 적어도 2라인 이상의 멸라인(destruction line : 라인에 번호가 아무것도 선택이 안된 라인)이 있어야 한다.
 	 * @param numbers
 	 * @return
 	 */
@@ -302,16 +330,14 @@ public class LottoComb {
 				43,44,45
 		};
 
-		if (checkArray4(numbers,horizontalGroup1) == true
-				&& checkArray4(numbers,horizontalGroup2) == true
-				&& checkArray4(numbers,horizontalGroup3) == true
-				&& checkArray4(numbers,horizontalGroup4) == true
-				&& checkArray4(numbers,horizontalGroup5) == true
-				&& checkArray4(numbers,horizontalGroup6) == true
-				&& checkArray4(numbers,horizontalGroup7) == true
-		) {
-			return false;
-		}
+		int horizontalGroupCount = 0;
+		if (!checkArray4(numbers,horizontalGroup1)) horizontalGroupCount++;
+		if (!checkArray4(numbers,horizontalGroup2)) horizontalGroupCount++;
+		if (!checkArray4(numbers,horizontalGroup3)) horizontalGroupCount++;
+		if (!checkArray4(numbers,horizontalGroup4)) horizontalGroupCount++;
+		if (!checkArray4(numbers,horizontalGroup5)) horizontalGroupCount++;
+		if (!checkArray4(numbers,horizontalGroup6)) horizontalGroupCount++;
+		if (!checkArray4(numbers,horizontalGroup7)) horizontalGroupCount++;
 
 		// 세로 라인
 		int[] verticalGroup1 = {
@@ -336,18 +362,20 @@ public class LottoComb {
 				7,14,21,28,35,42
 		};
 
-		if (checkArray4(numbers,verticalGroup1) == true
-				&& checkArray4(numbers,verticalGroup2) == true
-				&& checkArray4(numbers,verticalGroup3) == true
-				&& checkArray4(numbers,verticalGroup4) == true
-				&& checkArray4(numbers,verticalGroup5) == true
-				&& checkArray4(numbers,verticalGroup6) == true
-				&& checkArray4(numbers,verticalGroup7) == true
-		) {
+		int verticalGroupCount = 0;
+		if (!checkArray4(numbers,verticalGroup1)) verticalGroupCount++;
+		if (!checkArray4(numbers,verticalGroup2)) verticalGroupCount++;
+		if (!checkArray4(numbers,verticalGroup3)) verticalGroupCount++;
+		if (!checkArray4(numbers,verticalGroup4)) verticalGroupCount++;
+		if (!checkArray4(numbers,verticalGroup5)) verticalGroupCount++;
+		if (!checkArray4(numbers,verticalGroup6)) verticalGroupCount++;
+		if (!checkArray4(numbers,verticalGroup7)) verticalGroupCount++;
+
+		if (horizontalGroupCount >= 2 && verticalGroupCount >= 2) {
+			return true;
+		} else {
 			return false;
 		}
-
-		return true;
 	}
 	
 	private static boolean checkLottoPatternValidation(int[] numbers) {
@@ -405,102 +433,102 @@ public class LottoComb {
 		// 퐁당퐁당 패턴
 		// 퐁당퐁당 세로라인1
 		int[] pongdang1 = {
-			1,2,4,5,
-			8,9,11,12,
-			15,16,18,19,
-			22,23,25,26,
-			29,30,32,33,
-			36,37,39,40,
-			43,44
+				1,2,4,5,
+				8,9,11,12,
+				15,16,18,19,
+				22,23,25,26,
+				29,30,32,33,
+				36,37,39,40,
+				43,44
 		};
 		if (!checkArray1(numbers,pongdang1)) return false;
 
 		// 퐁당퐁당 세로라인2
 		int[] pongdang2 = {
-			3,4,6,7,
-			10,11,13,14,
-			17,18,20,21,
-			24,25,27,28,
-			31,32,34,35,
-			38,39,41,42,
-			45
+				3,4,6,7,
+				10,11,13,14,
+				17,18,20,21,
+				24,25,27,28,
+				31,32,34,35,
+				38,39,41,42,
+				45
 		};
 		if (!checkArray1(numbers,pongdang2)) return false;
 
 		// 좌우 패턴
 		int[] leftRight = {
-			1,2,6,7,
-			8,9,13,14,
-			15,16,20,21,
-			22,23,27,28,
-			29,30,34,35,
-			36,37,41,42,
-			43,44
+				1,2,6,7,
+				8,9,13,14,
+				15,16,20,21,
+				22,23,27,28,
+				29,30,34,35,
+				36,37,41,42,
+				43,44
 		};
 		if (!checkArray1(numbers,leftRight)) return false;
 
 		// 가로 연속 3줄 패턴
 		// 가로라인 1,2,3
 		int[] horizontalLine1 = {
-			1,2,3,4,5,6,7,
-			8,9,10,11,12,13,14,
-			15,16,17,18,19,20,21
+				1,2,3,4,5,6,7,
+				8,9,10,11,12,13,14,
+				15,16,17,18,19,20,21
 		};
 		if (!checkArray1(numbers,horizontalLine1)) return false;
 
 		// 가로라인 2,3,4
 		int[] horizontalLine2 = {
-			8,9,10,11,12,13,14,
-			15,16,17,18,19,20,21,
-			22,23,24,25,26,27,28
+				8,9,10,11,12,13,14,
+				15,16,17,18,19,20,21,
+				22,23,24,25,26,27,28
 		};
 		if (!checkArray1(numbers,horizontalLine2)) return false;
 
 		// 가로라인 3,4,5
 		int[] horizontalLine3 = {
-			15,16,17,18,19,20,21,
-			22,23,24,25,26,27,28,
-			29,30,31,32,33,34,35
+				15,16,17,18,19,20,21,
+				22,23,24,25,26,27,28,
+				29,30,31,32,33,34,35
 		};
 		if (!checkArray1(numbers,horizontalLine3)) return false;
 
 		// 가로라인 4,5,6
 		int[] horizontalLine4 = {
-			22,23,24,25,26,27,28,
-			29,30,31,32,33,34,35,
-			36,37,38,39,40,41,42
+				22,23,24,25,26,27,28,
+				29,30,31,32,33,34,35,
+				36,37,38,39,40,41,42
 		};
 		if (!checkArray1(numbers,horizontalLine4)) return false;
 
 		// 가로라인 5,6,7
 		int[] horizontalLine5 = {
-			29,30,31,32,33,34,35,
-			36,37,38,39,40,41,42,
-			43,44,45
+				29,30,31,32,33,34,35,
+				36,37,38,39,40,41,42,
+				43,44,45
 		};
 		if (!checkArray1(numbers,horizontalLine5)) return false;
 
 		// 가로연속 6줄 패턴
 		int[] horizontalGroup1 = {
-			1,2,3,4,5,6,7
+				1,2,3,4,5,6,7
 		};
 		int[] horizontalGroup2 = {
-			8,9,10,11,12,13,14
+				8,9,10,11,12,13,14
 		};
 		int[] horizontalGroup3 = {
-			15,16,17,18,19,20,21
+				15,16,17,18,19,20,21
 		};
 		int[] horizontalGroup4 = {
-			22,23,24,25,26,27,28
+				22,23,24,25,26,27,28
 		};
 		int[] horizontalGroup5 = {
-			29,30,31,32,33,34,35
+				29,30,31,32,33,34,35
 		};
 		int[] horizontalGroup6 = {
-			36,37,38,39,40,41,42
+				36,37,38,39,40,41,42
 		};
 		int[] horizontalGroup7 = {
-			43,44,45
+				43,44,45
 		};
 
 		// 가로 1라인부터 연속 6줄
@@ -672,6 +700,374 @@ public class LottoComb {
 		return true;
 	}
 
+	/**
+	 * 로또9단 분석기법에 소개된 30가지 패턴인데, 6개의 번호가 해당 패턴내에 있을 경우 1등 당첨이 되지 않을 확률이 99% 라고 함
+	 * @param numbers
+	 * @return
+	 */
+	public static boolean checkLotto9DanPattern30(int[] numbers) {
+		int[] pattern01 = {
+			2,6,9,
+			11,13,17,20,
+			22,24,25,27,28,29,
+			31,33,34,36,39,
+			41,42,43,44
+		};
+		if (!checkArray1(numbers,pattern01)) {
+			System.out.println("로또 9단 pattern01 false");
+			return false;
+		}
+
+		int[] pattern02 = {
+			2,6,9,
+			11,13,16,17,19,
+			22,23,25,26,28,30,
+			31,33,35,36,37,39,
+			42
+		};
+		if (!checkArray1(numbers,pattern02)) {
+			System.out.println("로또 9단 pattern02 false");
+			return false;
+		}
+
+		int[] pattern03 = {
+			1,2,
+			11,13,17,19,
+			22,23,26,29,
+			31,34,37,38,
+			41,43
+		};
+		if (!checkArray1(numbers,pattern03)) {
+			System.out.println("로또 9단 pattern03 false");
+			return false;
+		}
+
+		int[] pattern04 = {
+			6,7,9,
+			11,17,19,
+			24,27,28,
+			30,33,35,37,
+			40,41
+		};
+		if (!checkArray1(numbers,pattern04)) {
+			System.out.println("로또 9단 pattern04 false");
+			return false;
+		}
+
+		int[] pattern05 = {
+			1,2,3,4,5,6,7,8,
+			16,19,
+			22,23,24,25,26,27,28,29,30,
+			32,33,34,39
+		};
+		if (!checkArray1(numbers,pattern05)) {
+			System.out.println("로또 9단 pattern05 false");
+			return false;
+		}
+
+		int[] pattern06 = {
+			1,2,3,4,6,7,10,
+			18,20,
+			21,22,23,24,25,28,
+			35,37,40,
+			42,43,44,45
+		};
+		if (!checkArray1(numbers,pattern06)) {
+			System.out.println("로또 9단 pattern06 false");
+			return false;
+		}
+
+		int[] pattern07 = {
+			1,2,4,5,6,7,8,9,
+			11,12,15,16,20,
+			21,22,24,28,
+			32,36,40,
+			44,45
+		};
+		if (!checkArray1(numbers,pattern07)) {
+			System.out.println("로또 9단 pattern07 false");
+			return false;
+		}
+
+		int[] pattern08 = {
+			1,2,4,5,7,8,10,
+			13,14,15,17,
+			24,25,27,28,
+			31,36,40,
+			41,44,45
+		};
+		if (!checkArray1(numbers,pattern08)) {
+			System.out.println("로또 9단 pattern08 false");
+			return false;
+		}
+
+		int[] pattern09 = {
+			1,2,4,6,7,9,
+			11,13,14,15,16,18,
+			23,25,26,27,30,
+			32,34,36,37,39,40,
+			43,44,45
+		};
+		if (!checkArray1(numbers,pattern09)) {
+			System.out.println("로또 9단 pattern09 false");
+			return false;
+		}
+
+		int[] pattern10 = {
+			1,2,3,4,5,6,
+			13,17,18,19,
+			22,23,24,26,29,30,
+			31,32,33,36,37,38,39,40,
+			42,44
+		};
+		if (!checkArray1(numbers,pattern10)) {
+			System.out.println("로또 9단 pattern10 false");
+			return false;
+		}
+
+		int[] pattern11 = {
+			1,3,6,8,
+			11,16,17,18,19,20,
+			21,23,24,25,26,28,
+			31,33,34,35,37,38,40,
+			41,42
+		};
+		if (!checkArray1(numbers,pattern11)) {
+			System.out.println("로또 9단 pattern11 false");
+			return false;
+		}
+
+		int[] pattern12 = {
+			1,3,5,7,9,
+			11,13,15,17,
+			22,23,24,25,26,27,28,30,
+			31,33,36,38,40,
+			43,44,45
+		};
+		if (!checkArray1(numbers,pattern12)) {
+			System.out.println("로또 9단 pattern12 false");
+			return false;
+		}
+
+		int[] pattern13 = {
+			2,4,9,10,
+			12,13,16,17,20,
+			21,23,24,26,27,30,
+			31,32,34,35,36,37,38,
+			41,42,44
+		};
+		if (!checkArray1(numbers,pattern13)) {
+			System.out.println("로또 9단 pattern13 false");
+			return false;
+		}
+
+		int[] pattern14 = {
+			8,9,10,
+			11,12,13,14,16,17,20,
+			22,23,24,25,26,27,28,29,30,
+			32,35,39,40,
+			41,42,45
+		};
+		if (!checkArray1(numbers,pattern14)) {
+			System.out.println("로또 9단 pattern14 false");
+			return false;
+		}
+
+		int[] pattern15 = {
+			1,3,5,6,7,8,9,
+			12,15,16,17,19,
+			22,23,26,29,
+			31,33,35,36,37,38,39,
+			43,45
+		};
+		if (!checkArray1(numbers,pattern15)) {
+			System.out.println("로또 9단 pattern15 false");
+			return false;
+		}
+
+		int[] pattern16 = {
+			1,2,3,5,8,9,10,
+			15,16,17,18,
+			22,25,26,27,28,
+			31,33,34,35,36,38,40,
+			41,42
+		};
+		if (!checkArray1(numbers,pattern16)) {
+			System.out.println("로또 9단 pattern16 false");
+			return false;
+		}
+
+		int[] pattern17 = {
+			1,7,9,10,
+			11,15,16,19,
+			21,22,24,25,26,27,30,
+			32,34,36,37,38,40,
+			41,43,44,45
+		};
+		if (!checkArray1(numbers,pattern17)) {
+			System.out.println("로또 9단 pattern17 false");
+			return false;
+		}
+
+		int[] pattern18 = {
+			3,4,5,7,8,10,
+			11,12,14,15,16,17,18,19,
+			23,28,29,30,
+			35,36,37,40,
+			41,42,43
+		};
+		if (!checkArray1(numbers,pattern18)) {
+			System.out.println("로또 9단 pattern18 false");
+			return false;
+		}
+
+		int[] pattern19 = {
+			2,3,4,5,6,8,9,10,
+			12,15,16,18,19,
+			21,24,27,30,
+			33,36,37,39,40,
+			42,43
+		};
+		if (!checkArray1(numbers,pattern19)) {
+			System.out.println("로또 9단 pattern19 false");
+			return false;
+		}
+
+		int[] pattern20 = {
+			3,8,9,10,
+			12,15,17,18,20,
+			21,23,26,27,28,29,30,
+			32,33,36,37,38,39,40,
+			41
+		};
+		if (!checkArray1(numbers,pattern20)) {
+			System.out.println("로또 9단 pattern20 false");
+			return false;
+		}
+
+		int[] pattern21 = {
+			1,2,3,5,6,7,8,9,10,
+			12,13,14,15,16,17,19,
+			21,30,
+			33,36,37,39,
+			41,44
+		};
+		if (!checkArray1(numbers,pattern21)) {
+			System.out.println("로또 9단 pattern21 false");
+			return false;
+		}
+
+		int[] pattern22 = {
+			1,2,3,5,6,7,9,
+			11,13,16,17,19,20,
+			22,23,25,27,29,30,
+			32,34,35,37,38,
+			41
+		};
+		if (!checkArray1(numbers,pattern22)) {
+			System.out.println("로또 9단 pattern22 false");
+			return false;
+		}
+
+		int[] pattern23 = {
+			2,3,6,8,9,10,
+			12,13,14,15,16,19,20,
+			21,22,23,24,25,26,27,28,
+			33,
+			42,43,45
+		};
+		if (!checkArray1(numbers,pattern23)) {
+			System.out.println("로또 9단 pattern23 false");
+			return false;
+		}
+
+		int[] pattern24 = {
+			2,3,4,6,9,10,
+			11,14,15,18,19,
+			23,24,26,27,
+			31,34,35,36,38,
+			41,42,43,44
+		};
+		if (!checkArray1(numbers,pattern24)) {
+			System.out.println("로또 9단 pattern24 false");
+			return false;
+		}
+
+		int[] pattern25 = {
+			1,2,3,4,5,7,
+			12,13,15,18,20,
+			21,22,28,29,30,
+			31,36,37,38,40,
+			43,44,45
+		};
+		if (!checkArray1(numbers,pattern25)) {
+			System.out.println("로또 9단 pattern25 false");
+			return false;
+		}
+
+		int[] pattern26 = {
+			1,2,4,5,6,7,8,
+			11,12,13,14,
+			22,23,25,26,27,28,29,30,
+			32,39,40,
+			41,42
+		};
+		if (!checkArray1(numbers,pattern26)) {
+			System.out.println("로또 9단 pattern26 false");
+			return false;
+		}
+
+		int[] pattern27 = {
+			2,4,5,6,8,10,
+			12,13,14,16,19,
+			22,24,25,28,30,
+			31,32,35,38,
+			41,42,45
+		};
+		if (!checkArray1(numbers,pattern27)) {
+			System.out.println("로또 9단 pattern27 false");
+			return false;
+		}
+
+		int[] pattern28 = {
+			1,7,9,10,
+			12,13,16,17,18,19,
+			23,24,25,28,30,
+			31,33,34,37,40,
+			41,42
+		};
+		if (!checkArray1(numbers,pattern28)) {
+			System.out.println("로또 9단 pattern28 false");
+			return false;
+		}
+
+		int[] pattern29 = {
+			1,2,9,10,
+			11,12,13,14,20,
+			23,24,26,27,30,
+			34,36,38,39,40,
+			41,42,44
+		};
+		if (!checkArray1(numbers,pattern29)) {
+			System.out.println("로또 9단 pattern29 false");
+			return false;
+		}
+
+		int[] pattern30 = {
+			1,7,8,
+			14,15,16,17,18,19,20,
+			21,28,29,
+			31,32,33,34,35,36,
+			42,43
+		};
+		if (!checkArray1(numbers,pattern30)) {
+			System.out.println("로또 9단 pattern30 false");
+			return false;
+		}
+
+		return true;
+	}
+
 	private static boolean checkArray1(int[] numbers, int[] targets) {
 		int count = 0;
 		for (int number : numbers) {
@@ -724,6 +1120,8 @@ public class LottoComb {
 			if (!checkLottoNumberValidation(checkLottoNumbers)) return;
 
 			if (!checkLottoPatternValidation(checkLottoNumbers)) return;
+
+			if (!checkLotto9DanPattern30(checkLottoNumbers)) return;
 
 			for (int i = 0; i < start; i++) {
 				System.out.print(out[i] + " ");
