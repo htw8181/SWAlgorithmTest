@@ -214,6 +214,10 @@ public class LottoComb {
 		//이웃수는 3개까지
 		if (!checkNeighborNumbers(numbers)) return false;
 
+		//동일 끝수는 최소 2개(1쌍)이상 있도록 한다
+		if (endNumber0 < 2 && endNumber1 < 2 && endNumber2 < 2 && endNumber3 < 2 && endNumber4 < 2 && endNumber5 < 2 && endNumber6 < 2 && endNumber7 < 2 && endNumber8 < 2 && endNumber9 < 2)
+			return false;
+
 		//동일 끝수는 3개까지
 		if (endNumber0 > 3 || endNumber1 > 3 || endNumber2 > 3 || endNumber3 > 3 || endNumber4 > 3 || endNumber5 > 3 || endNumber6 > 3 || endNumber7 > 3 || endNumber8 > 3 || endNumber9 > 3)
 			return false;
